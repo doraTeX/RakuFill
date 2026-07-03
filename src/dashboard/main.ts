@@ -1,16 +1,19 @@
 import type { Profile, SiteEntry } from "../shared/types";
 import {
   deleteSite,
+  exportBackup,
   getSettings,
   getSites,
   getSyncEnabled,
   getSyncError,
+  importBackup,
   onStoreChanged,
   setSettings,
   setSite,
   setSyncEnabled,
 } from "../shared/storage";
 import { parseSiteEntry, SiteEntryShapeError } from "../shared/site-entry";
+import { parseBackup } from "../shared/backup";
 import { t } from "../shared/i18n";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -18,6 +21,9 @@ const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) 
 const autoApplyCheckbox = $<HTMLInputElement>("auto-apply");
 const syncEnabledCheckbox = $<HTMLInputElement>("sync-enabled");
 const syncErrorText = $<HTMLParagraphElement>("sync-error");
+const exportBtn = $<HTMLButtonElement>("export-btn");
+const importBtn = $<HTMLButtonElement>("import-btn");
+const importFileInput = $<HTMLInputElement>("import-file");
 const siteFilter = $<HTMLInputElement>("site-filter");
 const siteList = $<HTMLUListElement>("site-list");
 const noSites = $<HTMLParagraphElement>("no-sites");
@@ -42,6 +48,8 @@ function applyStaticTexts(): void {
   $("title-suffix").textContent = t("dashboard");
   $("auto-apply-label").textContent = t("settingAutoApply");
   $("sync-enabled-label").textContent = t("settingSync");
+  exportBtn.textContent = t("exportLabel");
+  importBtn.textContent = t("importLabel");
   $("sites-heading").textContent = t("sitesHeading");
   siteFilter.placeholder = t("filterPlaceholder");
   noSites.textContent = t("noSites");
@@ -361,6 +369,56 @@ autoApplyCheckbox.addEventListener("change", () => {
 syncEnabledCheckbox.addEventListener("change", () => {
   // 書き込むと background がそれを検知して即座に同期（push/pull）を行う
   void setSyncEnabled(syncEnabledCheckbox.checked);
+});
+
+function downloadJson(filename: string, text: string): void {
+  const blob = new Blob([text], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+exportBtn.addEventListener("click", async () => {
+  const json = await exportBackup();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const d = new Date();
+  const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`;
+  downloadJson(`rakufill-backup-${stamp}.json`, json);
+});
+
+importBtn.addEventListener("click", () => {
+  importFileInput.click();
+});
+
+importFileInput.addEventListener("change", async () => {
+  const file = importFileInput.files?.[0];
+  importFileInput.value = ""; // 同じファイルを連続選択しても change が発火するようにする
+  if (!file) return;
+
+  const text = await file.text();
+  let payload: ReturnType<typeof parseBackup>;
+  try {
+    payload = parseBackup(text);
+  } catch (e) {
+    alert(
+      e instanceof SiteEntryShapeError
+        ? t("importShapeError")
+        : t("importParseError", e instanceof Error ? e.message : String(e)),
+    );
+    return;
+  }
+
+  if (!confirm(t("confirmImport"))) return;
+
+  await importBackup(payload);
+  selectedUrlKey = null;
+  autoApplyCheckbox.checked = payload.settings.autoApplyEnabled;
+  syncEnabledCheckbox.checked = payload.syncEnabled;
+  await render();
+  alert(t("importSuccess"));
 });
 
 onStoreChanged(() => {

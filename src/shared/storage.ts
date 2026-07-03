@@ -1,5 +1,7 @@
 import type { Profile, Settings, SiteEntry, StoreData } from "./types";
 import { DEFAULT_SETTINGS } from "./types";
+import type { BackupPayload } from "./backup";
+import { serializeBackup } from "./backup";
 
 const SETTINGS_KEY = "settings";
 const SITES_KEY = "sites";
@@ -111,6 +113,25 @@ export async function markUsed(urlKey: string, profileId: string): Promise<void>
 
 export async function getStore(): Promise<StoreData> {
   return { settings: await getSettings(), sites: await getSites() };
+}
+
+/** 現在の設定・同期設定・全サイトデータを 1 つの JSON テキストに直列化する */
+export async function exportBackup(): Promise<string> {
+  const [settings, syncEnabled, sites] = await Promise.all([
+    getSettings(),
+    getSyncEnabled(),
+    getSites(),
+  ]);
+  return serializeBackup(settings, syncEnabled, sites);
+}
+
+/** バックアップの内容で設定・同期設定・全サイトデータを丸ごと置き換える */
+export async function importBackup(payload: BackupPayload): Promise<void> {
+  await Promise.all([
+    setSettings(payload.settings),
+    setSyncEnabled(payload.syncEnabled),
+    setSites(payload.sites),
+  ]);
 }
 
 /** storage の変更を購読する。戻り値は購読解除関数 */

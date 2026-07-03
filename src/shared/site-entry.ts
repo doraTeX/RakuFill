@@ -9,12 +9,11 @@ export class SiteEntryShapeError extends Error {
 }
 
 /**
- * JSON テキストを SiteEntry として検証・正規化する。
- * 構文エラーは SyntaxError、形式エラーは SiteEntryShapeError を投げる。
+ * 既にパース済みのデータを SiteEntry として検証・正規化する。
+ * 形式エラーは SiteEntryShapeError を投げる。
  * id / savedAt の欠けは補完し、lastUsedProfileId は実在しなければ先頭に付け替える。
  */
-export function parseSiteEntry(text: string): SiteEntry {
-  const data = JSON.parse(text) as unknown;
+export function parseSiteEntryObject(data: unknown): SiteEntry {
   if (typeof data !== "object" || data === null || !Array.isArray((data as SiteEntry).profiles)) {
     throw new SiteEntryShapeError();
   }
@@ -39,4 +38,12 @@ export function parseSiteEntry(text: string): SiteEntry {
       : (profiles[0]?.id ?? null);
   const alias = typeof raw.alias === "string" && raw.alias.trim() ? raw.alias.trim() : undefined;
   return { profiles, lastUsedProfileId: lastUsed, ...(alias ? { alias } : {}) };
+}
+
+/**
+ * JSON テキストを SiteEntry として検証・正規化する。
+ * 構文エラーは SyntaxError、形式エラーは SiteEntryShapeError を投げる。
+ */
+export function parseSiteEntry(text: string): SiteEntry {
+  return parseSiteEntryObject(JSON.parse(text) as unknown);
 }
