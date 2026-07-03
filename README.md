@@ -13,6 +13,8 @@
 - **クラウド同期**: Chrome にログイン中の Google アカウントで、保存データと設定を端末間同期（`chrome.storage.sync` 利用、デフォルト ON、ダッシュボードで OFF 可）
 - UI は日本語（`_locales` ベースなので他言語追加も容易）
 
+Chrome ウェブストアへの公開手順は [docs/PUBLISHING.md](docs/PUBLISHING.md) を参照。
+
 ## 開発
 
 ```sh
