@@ -14,7 +14,7 @@
 - **インポート/エクスポート**: ダッシュボードのチェック状況（自動適用・クラウド同期）と全 URL の保存済み入力状況を 1 つの JSON ファイルとして書き出し・読み込みできる（バックアップや、Chrome アカウントを使わない手動移行に）
 - UI は日本語（`_locales` ベースなので他言語追加も容易）
 
-Chrome ウェブストアへの公開手順は [docs/PUBLISHING.md](docs/PUBLISHING.md) を参照。
+Chrome ウェブストアへの公開手順は [docs/PUBLISHING.md](docs/PUBLISHING.md)、ストア掲載文面のドラフトは [docs/STORE_LISTING.md](docs/STORE_LISTING.md)、プライバシーポリシーは [docs/PRIVACY_POLICY.md](docs/PRIVACY_POLICY.md) を参照。
 
 ## 開発
 

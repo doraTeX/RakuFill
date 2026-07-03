@@ -12,11 +12,11 @@ RakuFill を Chrome ウェブストアで公開するまでの手順。
 
 現状の `dist/` はそのままでは足りないので、以下を用意する。
 
-- **アイコン**: 現行の 16/48/128px に加えて、ストア掲載用に**128×128 の高解像度版**が別途必要（既存のものを流用可、透過なし推奨）
-- **スクリーンショット**: 1280×800 または 640×400 を**最低 1 枚**（実際にバーやダッシュボードが動いている画面を撮ると良い）
-- **プロモタイル**（任意だが推奨）: 440×280 の小タイル
-- **説明文**: 日本語での短い説明（132 文字以内）と詳細説明。README の内容を元に書き起こす
-- **プライバシーポリシーの URL**: `host_permissions: ["<all_urls>"]` や `storage` 権限を使っているため、Chrome Web Store は**プライバシーポリシーの提出を要求**する。ブログや GitHub Pages 等でホストした URL が必要（「収集するデータはなく、`chrome.storage.local`/`sync` にのみ保存し外部送信しない」という趣旨を明記すればよい）
+- **アイコン**: ストア掲載用の 128×128 高解像度アイコンは [store-assets/icon-128.png](../store-assets/icon-128.png) として用意済み（`npm run icons` で再生成可能）
+- **スクリーンショット**: 1280×800 または 640×400 を**最低 1 枚**（実際にバーやダッシュボードが動いている画面を撮ると良い、構図案は [docs/STORE_LISTING.md](STORE_LISTING.md) 参照）※要撮影、未作成
+- **プロモタイル**（任意だが推奨）: 440×280 の小タイル ※未作成
+- **説明文**: 短い説明・詳細説明のドラフトを [docs/STORE_LISTING.md](STORE_LISTING.md) に用意済み
+- **プライバシーポリシーの URL**: `host_permissions: ["<all_urls>"]` や `storage` 権限を使っているため、Chrome Web Store は**プライバシーポリシーの提出を要求**する。文面は [docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md) を GitHub Pages 等でホストして URL を用意する
 
 ## 3. マニフェストの公開用調整
 
@@ -38,9 +38,9 @@ cd dist && zip -r ../rakufill.zip . && cd ..
 ## 5. Developer Dashboard でアイテム作成
 
 1. 「新しいアイテム」→ ZIP をアップロード
-2. ストア掲載情報（説明・スクリーンショット・カテゴリ「生産性」など・言語 = 日本語）を入力
+2. ストア掲載情報（説明・スクリーンショット・カテゴリ「生産性」など・言語 = 日本語）を入力。文面は [docs/STORE_LISTING.md](STORE_LISTING.md) のドラフトをそのまま貼り付け可能
 3. プライバシー慣行タブで、収集データの有無（「収集なし」）とプライバシーポリシー URL を入力
-4. 単一目的の説明、権限の正当化理由（`storage`/`tabs`/`contextMenus`/`host_permissions`）を記入
+4. 単一目的の説明、権限の正当化理由（`storage`/`tabs`/`contextMenus`/`host_permissions`）を記入。文面ドラフトは [docs/STORE_LISTING.md](STORE_LISTING.md) の該当節を参照
 5. 公開範囲（全ユーザー公開 / 限定公開 / 自分のみのテスト）を選択
 
 ## 6. 審査・公開
