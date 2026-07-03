@@ -3,9 +3,12 @@ import {
   deleteSite,
   getSettings,
   getSites,
+  getSyncEnabled,
+  getSyncError,
   onStoreChanged,
   setSettings,
   setSite,
+  setSyncEnabled,
 } from "../shared/storage";
 import { parseSiteEntry, SiteEntryShapeError } from "../shared/site-entry";
 import { t } from "../shared/i18n";
@@ -13,6 +16,8 @@ import { t } from "../shared/i18n";
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 
 const autoApplyCheckbox = $<HTMLInputElement>("auto-apply");
+const syncEnabledCheckbox = $<HTMLInputElement>("sync-enabled");
+const syncErrorText = $<HTMLParagraphElement>("sync-error");
 const siteFilter = $<HTMLInputElement>("site-filter");
 const siteList = $<HTMLUListElement>("site-list");
 const noSites = $<HTMLParagraphElement>("no-sites");
@@ -36,6 +41,7 @@ function applyStaticTexts(): void {
   document.title = t("dashboardTitle");
   $("title-suffix").textContent = t("dashboard");
   $("auto-apply-label").textContent = t("settingAutoApply");
+  $("sync-enabled-label").textContent = t("settingSync");
   $("sites-heading").textContent = t("sitesHeading");
   siteFilter.placeholder = t("filterPlaceholder");
   noSites.textContent = t("noSites");
@@ -226,9 +232,18 @@ async function renderDetail(): Promise<void> {
   }
 }
 
+async function renderSyncStatus(): Promise<void> {
+  const error = await getSyncError();
+  syncErrorText.hidden = error === null;
+  if (error !== null) {
+    syncErrorText.textContent = t("syncError", error);
+  }
+}
+
 async function render(): Promise<void> {
   await renderSiteList();
   await renderDetail();
+  await renderSyncStatus();
 }
 
 async function moveProfile(index: number, delta: number): Promise<void> {
@@ -343,6 +358,11 @@ autoApplyCheckbox.addEventListener("change", () => {
   void setSettings({ autoApplyEnabled: autoApplyCheckbox.checked });
 });
 
+syncEnabledCheckbox.addEventListener("change", () => {
+  // 書き込むと background がそれを検知して即座に同期（push/pull）を行う
+  void setSyncEnabled(syncEnabledCheckbox.checked);
+});
+
 onStoreChanged(() => {
   if (writingFromEditor) return;
   void render();
@@ -352,6 +372,7 @@ async function init(): Promise<void> {
   applyStaticTexts();
   const settings = await getSettings();
   autoApplyCheckbox.checked = settings.autoApplyEnabled;
+  syncEnabledCheckbox.checked = await getSyncEnabled();
   await render();
 }
 

@@ -17,6 +17,8 @@
 
   "dashboardTitle": { "message": "RakuFill Dashboard" },
   "settingAutoApply": { "message": "Automatically apply the last-used snapshot when opening a saved page" },
+  "settingSync": { "message": "Sync via your Google account (uses Chrome sync)" },
+  "syncError": { "message": "Sync error: $MSG$", "placeholders": { "MSG": { "content": "$1" } } },
   "sitesHeading": { "message": "Saved URLs" },
   "noSites": { "message": "No data saved yet. Fill in a form and save it from the toolbar icon." },
   "selectSitePrompt": { "message": "Select a URL from the list on the left" },

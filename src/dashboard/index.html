@@ -9,10 +9,17 @@
   <body>
     <header class="app-header">
       <h1><span class="brand">Raku<span class="accent">Fill</span></span> <span id="title-suffix"></span></h1>
-      <label class="setting">
-        <input type="checkbox" id="auto-apply" />
-        <span id="auto-apply-label"></span>
-      </label>
+      <div class="settings-group">
+        <label class="setting">
+          <input type="checkbox" id="auto-apply" />
+          <span id="auto-apply-label"></span>
+        </label>
+        <label class="setting">
+          <input type="checkbox" id="sync-enabled" />
+          <span id="sync-enabled-label"></span>
+        </label>
+        <p id="sync-error" class="sync-error" hidden></p>
+      </div>
     </header>
     <main class="layout">
       <aside class="sites-pane">
