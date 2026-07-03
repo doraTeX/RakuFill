@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RakuFill</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1><span class="brand">Raku<span class="accent">Fill</span></span> <span id="title-suffix"></span></h1>
+      <label class="setting">
+        <input type="checkbox" id="auto-apply" />
+        <span id="auto-apply-label"></span>
+      </label>
+    </header>
+    <main class="layout">
+      <aside class="sites-pane">
+        <h2 id="sites-heading"></h2>
+        <input type="search" id="site-filter" />
+        <ul id="site-list"></ul>
+        <p id="no-sites" class="empty" hidden></p>
+        <p id="no-filter-match" class="empty" hidden></p>
+      </aside>
+      <section class="detail-pane">
+        <p id="select-site-prompt" class="empty"></p>
+        <div id="site-detail" hidden>
+          <div class="detail-header">
+            <h2 id="site-url" class="site-url"></h2>
+            <button id="delete-site" class="danger"></button>
+          </div>
+          <label class="alias-row">
+            <span id="alias-label"></span>
+            <input type="text" id="site-alias" />
+          </label>
+          <h3 id="profiles-heading"></h3>
+          <ul id="profile-list"></ul>
+          <h3 id="json-heading"></h3>
+          <textarea id="json-editor" spellcheck="false"></textarea>
+          <p id="json-error" class="json-error" hidden></p>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

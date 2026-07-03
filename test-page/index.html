@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RakuFill 動作確認ページ</title>
+    <style>
+      body { font-family: sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; }
+      fieldset { margin-bottom: 16px; border-radius: 8px; }
+      label { display: block; margin: 8px 0; }
+      input[type="text"], input[type="email"], input[type="number"], input[type="date"], textarea, select {
+        width: 100%; max-width: 400px; padding: 6px; box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>RakuFill 動作確認ページ</h1>
+    <p>各項目を入力して、ツールバーの RakuFill アイコン → バーの「保存」を試してください。</p>
+    <form>
+      <fieldset>
+        <legend>テキスト系</legend>
+        <label>氏名 (id あり): <input type="text" id="full-name" name="fullName" /></label>
+        <label>メール (name のみ): <input type="email" name="email" /></label>
+        <label>年齢 (number): <input type="number" name="age" min="0" /></label>
+        <label>誕生日 (date): <input type="date" name="birthday" /></label>
+        <label>id も name もないテキスト: <input type="text" /></label>
+        <label>備考 (textarea): <textarea name="memo" rows="3"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>チェックボックス / ラジオ</legend>
+        <label><input type="checkbox" name="agree" /> 利用規約に同意する</label>
+        <label><input type="checkbox" name="newsletter" checked /> ニュースレターを受け取る（デフォルト ON）</label>
+        <label><input type="radio" name="plan" value="free" checked /> 無料プラン</label>
+        <label><input type="radio" name="plan" value="pro" /> Pro プラン</label>
+        <label><input type="radio" name="plan" value="team" /> チームプラン</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>プルダウン</legend>
+        <label>都道府県 (select):
+          <select name="pref">
+            <option value="">選択してください</option>
+            <option value="tokyo">東京都</option>
+            <option value="osaka">大阪府</option>
+            <option value="aichi">愛知県</option>
+          </select>
+        </label>
+        <label>興味のある分野 (select multiple):
+          <select name="interests" multiple size="4">
+            <option value="web">Web 開発</option>
+            <option value="ml">機械学習</option>
+            <option value="sec">セキュリティ</option>
+            <option value="game">ゲーム</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>保存対象外（仕様確認用）</legend>
+        <label>hidden (保存されないはず): <input type="hidden" name="csrf" value="token-xyz" /></label>
+        <label>ファイル (保存されないはず): <input type="file" name="attachment" /></label>
+      </fieldset>
+
+      <fieldset id="late-section">
+        <legend>2 秒後に出現する入力欄（自動適用のリトライ確認用）</legend>
+        <p id="late-placeholder">読み込み中…</p>
+      </fieldset>
+    </form>
+    <script>
+      // SPA の遅延レンダリングを模擬: 2 秒後にフィールドを追加する
+      setTimeout(() => {
+        const section = document.getElementById("late-section");
+        document.getElementById("late-placeholder").remove();
+        const label = document.createElement("label");
+        label.append("あとから出てくる欄: ");
+        const input = document.createElement("input");
+        input.type = "text";
+        input.name = "lateField";
+        label.append(input);
+        section.append(label);
+      }, 2000);
+    </script>
+  </body>
+</html>
