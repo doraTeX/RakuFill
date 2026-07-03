@@ -44,6 +44,7 @@ let aliasDebounce: ReturnType<typeof setTimeout> | undefined;
 let writingFromEditor = false;
 
 function applyStaticTexts(): void {
+  document.documentElement.lang = chrome.i18n.getUILanguage();
   document.title = t("dashboardTitle");
   $("title-suffix").textContent = t("dashboard");
   $("auto-apply-label").textContent = t("settingAutoApply");

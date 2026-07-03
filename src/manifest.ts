@@ -5,7 +5,9 @@ export default defineManifest({
   name: "__MSG_extName__",
   description: "__MSG_extDescription__",
   version: "0.1.0",
-  default_locale: "ja",
+  // 日本語 UI 環境では ja/messages.json が使われ、それ以外の言語環境では
+  // 一致するロケールが無いため既定ロケールの en/messages.json（英語）にフォールバックする
+  default_locale: "en",
   icons: {
     16: "icons/icon16.png",
     48: "icons/icon48.png",
