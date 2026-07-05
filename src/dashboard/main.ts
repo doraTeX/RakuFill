@@ -15,6 +15,7 @@ import {
 import { parseSiteEntry, SiteEntryShapeError } from "../shared/site-entry";
 import { parseBackup } from "../shared/backup";
 import { isSubmitEnter } from "../shared/keyboard";
+import { locateJsonError } from "../shared/json-lint";
 import { t } from "../shared/i18n";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -319,28 +320,39 @@ siteAliasInput.addEventListener("input", () => {
   }, 400);
 });
 
-jsonEditor.addEventListener("input", () => {
-  clearTimeout(jsonDebounce);
-  jsonDebounce = setTimeout(async () => {
-    const key = selectedUrlKey;
-    if (!key) return;
-    let entry: SiteEntry;
-    try {
-      entry = parseSiteEntry(jsonEditor.value);
-    } catch (e) {
-      jsonEditor.classList.add("invalid");
-      jsonError.textContent =
-        e instanceof SiteEntryShapeError
-          ? t("jsonShapeError")
-          : t("jsonParseError", e instanceof Error ? e.message : String(e));
-      jsonError.hidden = false;
-      return;
-    }
+/** JSON エディタの内容を即座に検証し、赤枠とエラーメッセージ（構文エラーは行/列付き）を更新する */
+function validateJsonEditor(): { ok: true; entry: SiteEntry } | { ok: false } {
+  try {
+    const entry = parseSiteEntry(jsonEditor.value);
     jsonEditor.classList.remove("invalid");
     jsonError.hidden = true;
+    return { ok: true, entry };
+  } catch (e) {
+    jsonEditor.classList.add("invalid");
+    if (e instanceof SiteEntryShapeError) {
+      jsonError.textContent = t("jsonShapeError");
+    } else {
+      const loc = locateJsonError(jsonEditor.value);
+      jsonError.textContent = loc
+        ? t("jsonSyntaxErrorAt", [String(loc.line), String(loc.column)])
+        : t("jsonParseError", e instanceof Error ? e.message : String(e));
+    }
+    jsonError.hidden = false;
+    return { ok: false };
+  }
+}
+
+jsonEditor.addEventListener("input", () => {
+  clearTimeout(jsonDebounce);
+  // 妥当性チェックとエラー表示は入力のたびに即時に行う（保存書き込みだけデバウンスする）
+  const result = validateJsonEditor();
+  const key = selectedUrlKey;
+  if (!result.ok || !key) return;
+
+  jsonDebounce = setTimeout(async () => {
     writingFromEditor = true;
     try {
-      await setSite(key, entry);
+      await setSite(key, result.entry);
     } finally {
       writingFromEditor = false;
     }

@@ -32,6 +32,7 @@
   "profilesHeading": { "message": "Saved snapshots" },
   "jsonHeading": { "message": "JSON (edits are applied immediately)" },
   "jsonParseError": { "message": "Invalid JSON: $ERROR$", "placeholders": { "ERROR": { "content": "$1" } } },
+  "jsonSyntaxErrorAt": { "message": "Invalid JSON syntax near line $LINE$, column $COLUMN$", "placeholders": { "LINE": { "content": "$1" }, "COLUMN": { "content": "$2" } } },
   "jsonShapeError": { "message": "Invalid data shape (a profiles array is required)" },
   "filterPlaceholder": { "message": "Filter by URL, display name, or snapshot name…" },
   "noFilterMatch": { "message": "No URLs match the filter" },

@@ -32,6 +32,7 @@
   "profilesHeading": { "message": "保存済みの入力状況" },
   "jsonHeading": { "message": "JSON（編集すると直ちに反映されます）" },
   "jsonParseError": { "message": "JSON が不正です: $ERROR$", "placeholders": { "ERROR": { "content": "$1" } } },
+  "jsonSyntaxErrorAt": { "message": "$LINE$ 行目 $COLUMN$ 列目付近で JSON の構文が不正です", "placeholders": { "LINE": { "content": "$1" }, "COLUMN": { "content": "$2" } } },
   "jsonShapeError": { "message": "データ形式が不正です（profiles 配列が必要です）" },
   "filterPlaceholder": { "message": "URL・表示名・入力状況名で絞り込み…" },
   "noFilterMatch": { "message": "絞り込みに一致する URL がありません" },
