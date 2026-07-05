@@ -14,6 +14,7 @@ import {
 } from "../shared/storage";
 import { parseSiteEntry, SiteEntryShapeError } from "../shared/site-entry";
 import { parseBackup } from "../shared/backup";
+import { isSubmitEnter } from "../shared/keyboard";
 import { t } from "../shared/i18n";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -150,7 +151,7 @@ function startRename(row: HTMLLIElement, profile: Profile): void {
     await setSite(selectedUrlKey, entry);
   };
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") void commit();
+    if (isSubmitEnter(e)) void commit();
     if (e.key === "Escape") {
       done = true;
       void render();

@@ -1,5 +1,6 @@
 import type { Profile } from "../shared/types";
 import { t } from "../shared/i18n";
+import { isSubmitEnter } from "../shared/keyboard";
 
 export interface BarCallbacks {
   onSaveRequested(name: string): void | Promise<void>;
@@ -181,7 +182,7 @@ function openSavePanel(): void {
   };
   ok.addEventListener("click", submit);
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") submit();
+    if (isSubmitEnter(e)) submit();
     if (e.key === "Escape") closeSavePanel();
   });
 
