@@ -10,8 +10,9 @@ body {
 .app-header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 16px;
+  gap: 8px 16px;
   padding: 12px 20px;
   background: #312e81;
   color: #fff;
@@ -23,7 +24,7 @@ body {
 .setting input { width: 16px; height: 16px; cursor: pointer; }
 .sync-error { margin: 0; font-size: 12px; color: #fecaca; }
 
-.backup-actions { display: flex; gap: 6px; margin-top: 2px; }
+.backup-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
 .backup-actions button { height: 24px; padding: 0 10px; font-size: 12px; }
 
 .layout {
@@ -74,8 +75,8 @@ h3 { margin: 18px 0 8px; font-size: 14px; }
 
 .empty { color: #6b7280; font-size: 13px; }
 
-.detail-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.site-url { word-break: break-all; font-size: 14px; color: #4338ca; }
+.detail-header { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 8px 12px; }
+.site-url { flex: 1 1 200px; min-width: 0; word-break: break-all; font-size: 14px; color: #4338ca; }
 
 .alias-row {
   display: flex;
@@ -98,15 +99,17 @@ h3 { margin: 18px 0 8px; font-size: 14px; }
 #profile-list li {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 8px 10px;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   margin-bottom: 6px;
 }
-#profile-list .name { flex: 1; font-weight: 600; word-break: break-all; }
+#profile-list .name { flex: 1 1 120px; min-width: 120px; font-weight: 600; word-break: break-all; }
 #profile-list .name-edit {
-  flex: 1;
+  flex: 1 1 120px;
+  min-width: 120px;
   height: 28px;
   padding: 0 8px;
   border: 1px solid #6366f1;
@@ -134,6 +137,8 @@ button {
   color: #fff;
   font-size: 12px;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 button:hover { background: #818cf8; }
 button:disabled { opacity: .35; cursor: default; }
