@@ -113,6 +113,11 @@ function installUrlWatcher(): void {
   wrapHistoryMethod("replaceState");
   addEventListener("popstate", handleUrlMaybeChanged);
   addEventListener("hashchange", handleUrlMaybeChanged);
+
+  // Fallback for pages that overwrite history.pushState/replaceState after
+  // this content script has wrapped them. This preserves SPA detection without
+  // bringing back the broader tabs permission.
+  setInterval(handleUrlMaybeChanged, 1000);
 }
 
 // ダッシュボードや他タブでの変更をプルダウンへ即時反映

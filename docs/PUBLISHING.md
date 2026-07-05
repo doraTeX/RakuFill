@@ -1,55 +1,57 @@
-# Chrome ウェブストアへの公開手順
+# Publishing To The Chrome Web Store
 
-RakuFill を Chrome ウェブストアで公開するまでの手順。
+Steps for publishing RakuFill to the Chrome Web Store.
 
-## 1. デベロッパー登録（初回のみ）
+Japanese version: [PUBLISHING.ja.md](PUBLISHING.ja.md)
 
-1. [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) にアクセスし、Google アカウントでログイン
-2. **$5 の登録料**を一度だけ支払う（クレジットカード）
-3. デベロッパー名（公開ページに表示される発行者名）を設定
+## 1. Register As A Developer
 
-## 2. ストア掲載用の素材を準備
+1. Open the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and sign in with a Google account.
+2. Pay the one-time developer registration fee.
+3. Set the developer name shown on the public listing.
 
-現状の `dist/` はそのままでは足りないので、以下を用意する。
+## 2. Prepare Store Assets
 
-- **アイコン**: ストア掲載用の 128×128 高解像度アイコンは [store-assets/icon-128.png](../store-assets/icon-128.png) として用意済み（`npm run icons` で再生成可能）
-- **スクリーンショット**: 1280×800 または 640×400 を**最低 1 枚**（実際にバーやダッシュボードが動いている画面を撮ると良い、構図案は [docs/STORE_LISTING.md](STORE_LISTING.md) 参照）※要撮影、未作成
-- **プロモタイル**（任意だが推奨）: 440×280 の小タイル ※未作成
-- **説明文**: 日本語ドラフトは [docs/STORE_LISTING.md](STORE_LISTING.md)、英語ドラフトは [docs/STORE_LISTING.en.md](STORE_LISTING.en.md) に用意済み
-- **プライバシーポリシーの URL**: `host_permissions: ["<all_urls>"]` や `storage` 権限を使っているため、Chrome Web Store は**プライバシーポリシーの提出を要求**する。日本語文面は [docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md)、英語文面は [docs/PRIVACY_POLICY.en.md](PRIVACY_POLICY.en.md) を GitHub Pages 等でホストして URL を用意する
+The built `dist/` package is not enough by itself. Prepare:
 
-## 3. マニフェストの公開用調整
+- **Icon**: the 128x128 store icon is available at [store-assets/icon-128.png](../store-assets/icon-128.png). Regenerate with `npm run icons` if needed.
+- **Screenshots**: at least one 1280x800 or 640x400 screenshot. Capture the RakuFill bar and/or dashboard in actual use.
+- **Promotional tile**: optional but recommended, 440x280.
+- **Listing text**: English draft: [STORE_LISTING.md](STORE_LISTING.md). Japanese draft: [STORE_LISTING.ja.md](STORE_LISTING.ja.md).
+- **Privacy policy URL**: Chrome Web Store requires a privacy policy because RakuFill uses `host_permissions: ["<all_urls>"]` and `storage`. English policy: [PRIVACY_POLICY.md](PRIVACY_POLICY.md). Japanese policy: [PRIVACY_POLICY.ja.md](PRIVACY_POLICY.ja.md).
 
-[src/manifest.ts](../src/manifest.ts) で確認・調整する。
+## 3. Manifest Checklist
 
-- `version` は `1.0.0`
-- `<all_urls>` の `host_permissions` は審査で**理由の説明を求められやすい**項目。審査時の「単一目的の説明」欄に「ユーザー自身が任意のページでフォーム入力を保存・復元するため、全サイトへのアクセスが必要」と明記する
-- `tabs` 権限は使用しない。SPA の URL 変化は content script 側で `history.pushState` / `replaceState` / `popstate` / `hashchange` を監視する
-- `manifest_version: 3` は既に対応済み（MV2 は新規審査が通らないため必須）
+Check [src/manifest.ts](../src/manifest.ts):
 
-## 4. パッケージ作成
+- `version` is `1.0.0`.
+- `<all_urls>` host permissions are required because users can save and restore forms on arbitrary websites. Explain this clearly in the single-purpose and permission-justification fields.
+- `tabs` permission is not used. SPA URL changes are detected in the content script through `history.pushState` / `replaceState`, `popstate`, `hashchange`, and a low-frequency URL check fallback.
+- Manifest V3 is used.
+
+## 4. Build The Upload ZIP
 
 ```sh
 npm run build
 cd dist && zip -r ../rakufill.zip . && cd ..
 ```
 
-この ZIP をそのままアップロードする（`node_modules` 等は `dist/` に含まれないので問題なし）。
+Upload this ZIP. `node_modules` and source files are not included in `dist/`.
 
-## 5. Developer Dashboard でアイテム作成
+## 5. Create The Store Item
 
-1. 「新しいアイテム」→ ZIP をアップロード
-2. ストア掲載情報（説明・スクリーンショット・カテゴリ「生産性」など）を入力。日本語文面は [docs/STORE_LISTING.md](STORE_LISTING.md)、英語文面は [docs/STORE_LISTING.en.md](STORE_LISTING.en.md) のドラフトを利用可能
-3. プライバシー慣行タブで、収集データの有無とプライバシーポリシー URL を入力。保存データは開発者サーバーへ送らないが、フォーム入力値を扱い、設定次第でパスワード欄も保存され得る点を説明とポリシー URL で明示する
-4. 単一目的の説明、権限の正当化理由（`storage`/`contextMenus`/`host_permissions`）を記入。文面ドラフトは [docs/STORE_LISTING.md](STORE_LISTING.md) / [docs/STORE_LISTING.en.md](STORE_LISTING.en.md) の該当節を参照
-5. 公開範囲（全ユーザー公開 / 限定公開 / 自分のみのテスト）を選択
+1. Choose "New item" and upload the ZIP.
+2. Fill in the store listing: description, screenshots, category "Productivity", and locale text. Use [STORE_LISTING.md](STORE_LISTING.md) and [STORE_LISTING.ja.md](STORE_LISTING.ja.md).
+3. Fill in privacy practices and the privacy policy URL. RakuFill does not send saved data to the developer's server, but it handles form input values and can save password fields if the user explicitly enables that setting.
+4. Fill in the single-purpose statement and permission justifications for `storage`, `contextMenus`, and `host_permissions`.
+5. Choose public, unlisted, or trusted-tester distribution.
 
-## 6. 審査・公開
+## 6. Review And Release
 
-- 提出後、審査には**数時間〜数営業日**（`<all_urls>` のような広い権限があると長引きやすい）
-- 差し戻された場合は指摘内容に従って修正・再提出
-- 承認されると自動で公開される（または「公開」ボタンを手動で押す設定も可）
+- Review usually takes several hours to several business days. Broad host permissions can make review longer.
+- If the item is rejected, address the review comments and resubmit.
+- Once approved, the item is published automatically or waits for manual publishing, depending on the dashboard setting.
 
-## 補足: 個人利用だけなら公開不要
+## Note: Private Use
 
-「デベロッパーモードで `dist/` を読み込む」現状のままでも、別端末で同じ Google アカウントの Chrome に同じ手順でインストールすれば動作する（クラウド同期も含めて機能する）。ストア公開が必要なのは「他人に配りたい」「デベロッパーモード無効の環境で使いたい」場合。個人限定なら Developer Dashboard の「**限定公開（Unlisted）**」にして自分の Google アカウントのみに配布する方法もあり、審査は必要だが心理的ハードルは下がる。
+For personal use, public listing is not necessary. You can load `dist/` in developer mode on each Chrome profile. Cloud sync works if the same Google account and Chrome extension sync are enabled. Unlisted distribution is also possible if you want a lower-profile store item.

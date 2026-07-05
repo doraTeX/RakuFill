@@ -1,66 +1,64 @@
-# Chrome ウェブストア掲載情報（ドラフト）
+# Chrome Web Store Listing Draft
 
-Developer Dashboard の「ストアの掲載情報」タブに入力する文面のドラフト。文字数はすべて JS の `string.length`（サロゲートペア考慮なしの単純な文字数）で計測。
+Draft text for the Chrome Web Store Developer Dashboard.
 
-## 短い説明（132 文字以内）
+Japanese version: [STORE_LISTING.ja.md](STORE_LISTING.ja.md)
 
-> フォームの入力内容をURLごとに名前を付けて保存・復元。保存済みページでは自動でバーが現れ、ワンクリックで再入力できます。クラウド同期で他端末とも共有可能。
+## Short Description
 
-（78 文字）
+> Save named snapshots of form inputs per URL and restore them with one click. Optional cloud sync and password-field saving are user-controlled.
 
-## 詳細な説明
+## Detailed Description
 
-```
-RakuFill（ラクフィル）は、Web フォームに入力した内容を「名前を付けて」保存し、あとからワンクリックで復元できる拡張機能です。
+```text
+RakuFill saves named snapshots of web form inputs per URL and restores them with one click.
 
-何度も同じような内容を入力するフォーム（申請書、問い合わせフォーム、テスト用データ入力など）が手間だと感じたことはありませんか？
-RakuFill なら、入力状況をパターンごとに名前を付けて保存しておき、必要なときにプルダウンから選ぶだけで瞬時に復元できます。
+If you often fill out similar forms, test forms, application forms, or contact forms, RakuFill lets you save each input pattern with a name and restore it later from a small top bar.
 
-■ 主な機能
+Main features:
 
-・ワンクリックで保存: ツールバーのアイコンをクリックすると画面上部にバーが表示され、「保存」ボタンで現在のフォーム入力状況に名前を付けて保存
-・ワンクリックで復元: バーのプルダウンから保存済みの入力状況を選ぶだけで即座に反映
-・自動表示・自動適用: 保存済みのページを開くと自動でバーが表示され、最後に使った入力状況が自動的に適用されます（設定でオフにすることも可能）
-・ダッシュボード画面: 保存した入力状況の名前の変更、複製（似たパターンをすぐ量産できます）、削除、並べ替えが可能。URL ごとに分かりやすい表示名（愛称）も付けられます
-・絞り込み検索: 保存件数が増えても、URL・表示名・入力状況名ですぐに目的のデータを見つけられます
-・パスワード欄の保存設定: パスワード欄はデフォルトでは保存しません。ダッシュボードで「パスワード欄の保存を許可する」をオンにした場合のみ、パスワード欄も保存対象にできます
-・クラウド同期: Chrome にログイン中の Google アカウントで、保存データと設定を他の端末とも同期できます（デフォルトはオフ。ダッシュボードでオンにできます）
-・インポート/エクスポート: 全データをひとつの JSON ファイルとして書き出し・読み込みができ、バックアップや手動での移行にも対応
-・フォーム構成の変化に強い: サイトの改修で入力欄が増えたり減ったりしても、なくなった項目はスキップし、新しい項目には手を加えずに復元します
-・言語自動切り替え: Chrome の表示言語が日本語の場合は日本語 UI、それ以外の言語環境では英語 UI が自動的に表示されます
+- Save form snapshots: click the toolbar icon, open the RakuFill bar, and save the current form state with a name.
+- Restore with one click: choose a saved snapshot from the dropdown to apply it immediately.
+- Auto-show and auto-apply: when a page has saved snapshots, RakuFill can show the bar automatically and apply the last-used snapshot. Auto-apply can be disabled in the dashboard.
+- Dashboard: rename, duplicate, delete, and reorder snapshots. You can also assign display names to URLs and search by URL, display name, or snapshot name.
+- Import/export: export all saved data and settings as one JSON backup file, or import a backup to replace the current data.
+- Cloud sync: sync saved data and settings through Chrome sync when enabled. Cloud sync is off by default and can be enabled or disabled in the dashboard.
+- Password-field setting: password fields are not saved by default. They can be included only when the user explicitly enables "Allow saving password fields" in the dashboard.
+- Localization: Japanese UI is shown in Japanese Chrome environments; other locales use English UI.
 
-■ プライバシーについて
+Privacy:
 
-RakuFill は入力データを開発者のサーバーや第三者へ一切送信しません。保存したデータは Chrome の拡張機能ストレージ内、またはユーザーがクラウド同期をオンにした場合のみ、ユーザー自身の Google アカウントに紐づく Chrome の同期機能を通じて扱われます。クラウド同期はデフォルトではオフです。パスワード欄はデフォルトでは保存対象外で、ユーザーが明示的に設定をオンにした場合のみ保存され得ます。広告表示やアクセス解析、トラッキングも行いません。
+RakuFill does not send saved form data to the developer's server or to any third-party server. Data is stored in Chrome extension storage, and in Chrome sync only when the user enables Cloud sync. Password fields are excluded by default and are saved only if the user explicitly enables that setting. RakuFill does not include ads, analytics, or tracking.
 
-詳しくはプライバシーポリシーをご確認ください。
+See the privacy policy for details.
 ```
 
-## カテゴリ
+## Category
 
-- 生産性
+- Productivity
 
-## 言語
+## Languages
 
-- 既定ロケール（`default_locale`）は英語。日本語ロケールも同梱しており、Chrome の表示言語が日本語の場合は自動的に日本語 UI になります
+- Default locale: English
+- Japanese locale included
 
-## スクリーンショット案（要撮影・別途用意）
+## Screenshot Ideas
 
-1. 入力済みのフォームと、上部に表示された RakuFill バー（プルダウンと「保存」ボタンが見える状態）
-2. 保存時の名前入力ダイアログ
-3. ダッシュボード画面全体（URL 一覧・入力状況リスト・JSON エディタが見える構図）
-4. ダッシュボードの絞り込み検索・複製ボタンの様子
+1. A filled form with the RakuFill top bar visible.
+2. The save panel for naming a snapshot.
+3. The dashboard with saved URLs, snapshots, settings, and the JSON editor.
+4. The dashboard filter and duplicate action.
 
-推奨サイズ: 1280×800（または 640×400）。
+Recommended sizes: 1280x800 or 640x400.
 
-## 権限の正当化理由（審査フォーム用ドラフト）
+## Permission Justifications
 
-| 権限 | 正当化理由の記入例 |
+| Permission | Draft justification |
 | --- | --- |
-| `storage` | ユーザーが保存したフォーム入力状況と拡張機能の設定を保存・読み込みするために使用します。 |
-| `contextMenus` | ツールバーアイコンの右クリックメニューに「ダッシュボード」の項目を追加するために使用します。 |
-| `host_permissions`（`<all_urls>`） | 本拡張機能の中核機能は、ユーザーが指定した任意の Web ページ上のフォーム入力を読み取り・復元することです。対象ページをあらかじめ限定できないため、全サイトへのアクセス権限が必要です。パスワード欄はデフォルトでは読み取り・保存対象外で、ユーザーがダッシュボードで明示的に許可した場合のみ保存され得ます。収集した内容を外部送信することはありません。 |
+| `storage` | Used to save and load user-created form snapshots and extension settings. |
+| `contextMenus` | Used to add a Dashboard item to the toolbar icon context menu. |
+| `host_permissions` (`<all_urls>`) | RakuFill's core purpose is to read and restore form inputs on arbitrary pages chosen by the user. The target websites cannot be known in advance, so broad host access is required. Password fields are excluded by default and are saved only if the user explicitly enables that setting. Saved data is not sent to the developer or to third-party servers. |
 
-## 単一目的の説明（審査フォーム用ドラフト）
+## Single Purpose Statement
 
-> 本拡張機能の単一の目的は、ユーザーが Web フォームに入力した内容を、ユーザー自身の操作によって名前を付けて保存し、後から同じページで復元できるようにすることです。パスワード欄はデフォルトでは保存せず、ユーザーが明示的に許可した場合のみ保存対象にできます。
+> RakuFill's single purpose is to let users save named snapshots of web form inputs and restore them later on the same page. Password fields are excluded by default and can be included only when the user explicitly enables that setting.
