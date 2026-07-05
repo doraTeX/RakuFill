@@ -37,7 +37,7 @@ export function parseBackup(text: string): BackupPayload {
       ? (raw.settings as Partial<Settings>)
       : {}),
   };
-  const syncEnabled = typeof raw.syncEnabled === "boolean" ? raw.syncEnabled : true;
+  const syncEnabled = typeof raw.syncEnabled === "boolean" ? raw.syncEnabled : false;
 
   const sites: Record<string, SiteEntry> = {};
   for (const [key, value] of Object.entries(raw.sites)) {

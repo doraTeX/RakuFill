@@ -10,7 +10,7 @@ function roundTrip(payload: string): string | null {
 describe("sync のチャンク分割", () => {
   it("分割 → 結合で元に戻る（日本語含む）", () => {
     const payload = JSON.stringify({
-      settings: { autoApplyEnabled: true },
+      settings: { autoApplyEnabled: true, savePasswordsEnabled: false },
       sites: {
         "https://example.com/フォーム": {
           profiles: [{ id: "p1", name: "申請 その1", savedAt: 1, fields: [] }],

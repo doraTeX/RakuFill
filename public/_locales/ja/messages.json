@@ -17,6 +17,7 @@
 
   "dashboardTitle": { "message": "RakuFill ダッシュボード" },
   "settingAutoApply": { "message": "保存済みのページを開いたとき、最後に使った入力状況を自動で適用する" },
+  "settingSavePasswords": { "message": "パスワード欄の保存を許可する" },
   "settingSync": { "message": "クラウド同期" },
   "syncError": { "message": "同期エラー: $MSG$", "placeholders": { "MSG": { "content": "$1" } } },
   "exportLabel": { "message": "エクスポート" },

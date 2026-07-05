@@ -40,14 +40,6 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (info.menuItemId === DASHBOARD_MENU_ID) openDashboard();
 });
 
-// SPA を含む URL 変化を検知して content script に再チェックさせる（要件5の「常に監視」）
-chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
-  if (!changeInfo.url) return;
-  chrome.tabs
-    .sendMessage(tabId, { type: "URL_CHANGED" } satisfies Message)
-    .catch(() => {});
-});
-
 // バー内の「ダッシュボード」ボタン
 chrome.runtime.onMessage.addListener((message: Message) => {
   if (message.type === "OPEN_DASHBOARD") openDashboard();

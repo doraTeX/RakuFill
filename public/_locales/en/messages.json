@@ -17,6 +17,7 @@
 
   "dashboardTitle": { "message": "RakuFill Dashboard" },
   "settingAutoApply": { "message": "Automatically apply the last-used snapshot when opening a saved page" },
+  "settingSavePasswords": { "message": "Allow saving password fields" },
   "settingSync": { "message": "Cloud sync" },
   "syncError": { "message": "Sync error: $MSG$", "placeholders": { "MSG": { "content": "$1" } } },
   "exportLabel": { "message": "Export" },

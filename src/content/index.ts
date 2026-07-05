@@ -23,7 +23,8 @@ async function refreshBarProfiles(): Promise<void> {
 async function handleSave(name: string): Promise<void> {
   const key = currentUrlKey();
   if (!key) return;
-  const fields = captureFields();
+  const settings = await getSettings();
+  const fields = captureFields({ includePasswords: settings.savePasswordsEnabled });
   if (fields.length === 0) {
     showToast(t("toastNoFields"));
     return;
@@ -86,14 +87,38 @@ chrome.runtime.onMessage.addListener((message: Message) => {
   if (message.type === "TOGGLE_BAR") {
     toggleBar();
     void refreshBarProfiles();
-  } else if (message.type === "URL_CHANGED") {
-    void checkPage();
   }
 });
+
+let lastUrlKey = currentUrlKey();
+
+function handleUrlMaybeChanged(): void {
+  const next = currentUrlKey();
+  if (next === lastUrlKey) return;
+  lastUrlKey = next;
+  void checkPage();
+}
+
+function installUrlWatcher(): void {
+  const wrapHistoryMethod = (name: "pushState" | "replaceState") => {
+    const original = history[name];
+    history[name] = function (...args) {
+      const result = original.apply(this, args);
+      queueMicrotask(handleUrlMaybeChanged);
+      return result;
+    };
+  };
+
+  wrapHistoryMethod("pushState");
+  wrapHistoryMethod("replaceState");
+  addEventListener("popstate", handleUrlMaybeChanged);
+  addEventListener("hashchange", handleUrlMaybeChanged);
+}
 
 // ダッシュボードや他タブでの変更をプルダウンへ即時反映
 onStoreChanged(() => {
   void refreshBarProfiles();
 });
 
+installUrlWatcher();
 void checkPage();

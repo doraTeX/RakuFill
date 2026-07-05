@@ -19,6 +19,7 @@ import { t } from "../shared/i18n";
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 
 const autoApplyCheckbox = $<HTMLInputElement>("auto-apply");
+const savePasswordsCheckbox = $<HTMLInputElement>("save-passwords");
 const syncEnabledCheckbox = $<HTMLInputElement>("sync-enabled");
 const syncErrorText = $<HTMLParagraphElement>("sync-error");
 const exportBtn = $<HTMLButtonElement>("export-btn");
@@ -48,6 +49,7 @@ function applyStaticTexts(): void {
   document.title = t("dashboardTitle");
   $("title-suffix").textContent = t("dashboard");
   $("auto-apply-label").textContent = t("settingAutoApply");
+  $("save-passwords-label").textContent = t("settingSavePasswords");
   $("sync-enabled-label").textContent = t("settingSync");
   exportBtn.textContent = t("exportLabel");
   importBtn.textContent = t("importLabel");
@@ -364,7 +366,17 @@ deleteSiteBtn.addEventListener("click", async () => {
 });
 
 autoApplyCheckbox.addEventListener("change", () => {
-  void setSettings({ autoApplyEnabled: autoApplyCheckbox.checked });
+  void setSettings({
+    autoApplyEnabled: autoApplyCheckbox.checked,
+    savePasswordsEnabled: savePasswordsCheckbox.checked,
+  });
+});
+
+savePasswordsCheckbox.addEventListener("change", () => {
+  void setSettings({
+    autoApplyEnabled: autoApplyCheckbox.checked,
+    savePasswordsEnabled: savePasswordsCheckbox.checked,
+  });
 });
 
 syncEnabledCheckbox.addEventListener("change", () => {
@@ -417,6 +429,7 @@ importFileInput.addEventListener("change", async () => {
   await importBackup(payload);
   selectedUrlKey = null;
   autoApplyCheckbox.checked = payload.settings.autoApplyEnabled;
+  savePasswordsCheckbox.checked = payload.settings.savePasswordsEnabled;
   syncEnabledCheckbox.checked = payload.syncEnabled;
   await render();
   alert(t("importSuccess"));
@@ -431,6 +444,7 @@ async function init(): Promise<void> {
   applyStaticTexts();
   const settings = await getSettings();
   autoApplyCheckbox.checked = settings.autoApplyEnabled;
+  savePasswordsCheckbox.checked = settings.savePasswordsEnabled;
   syncEnabledCheckbox.checked = await getSyncEnabled();
   await render();
 }

@@ -45,6 +45,7 @@ export interface SiteEntry {
 
 export interface Settings {
   autoApplyEnabled: boolean;
+  savePasswordsEnabled: boolean;
 }
 
 export interface StoreData {
@@ -52,10 +53,12 @@ export interface StoreData {
   sites: Record<string, SiteEntry>;
 }
 
-export const DEFAULT_SETTINGS: Settings = { autoApplyEnabled: true };
+export const DEFAULT_SETTINGS: Settings = {
+  autoApplyEnabled: true,
+  savePasswordsEnabled: false,
+};
 
 /** background ↔ content script 間のメッセージ */
 export type Message =
   | { type: "TOGGLE_BAR" }
-  | { type: "URL_CHANGED" }
   | { type: "OPEN_DASHBOARD" };

@@ -38,7 +38,7 @@ export async function getDataUpdatedAt(): Promise<number> {
 
 export async function getSyncEnabled(): Promise<boolean> {
   const res = await chrome.storage.local.get(SYNC_ENABLED_KEY);
-  return (res[SYNC_ENABLED_KEY] as boolean | undefined) ?? true;
+  return (res[SYNC_ENABLED_KEY] as boolean | undefined) ?? false;
 }
 
 export async function setSyncEnabled(enabled: boolean): Promise<void> {

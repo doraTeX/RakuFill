@@ -5,6 +5,7 @@ import { applyFields } from "../src/content/apply";
 const FORM_HTML = `
   <form>
     <input id="name" type="text" />
+    <input id="password" type="password" />
     <input id="agree" type="checkbox" />
     <input type="radio" name="color" value="red" />
     <input type="radio" name="color" value="blue" />
@@ -26,6 +27,7 @@ const FORM_HTML = `
 
 function fillForm(): void {
   document.querySelector<HTMLInputElement>("#name")!.value = "山田太郎";
+  document.querySelector<HTMLInputElement>("#password")!.value = "secret";
   document.querySelector<HTMLInputElement>("#agree")!.checked = true;
   document.querySelector<HTMLInputElement>('input[value="blue"]')!.checked = true;
   document.querySelector<HTMLTextAreaElement>("#memo")!.value = "メモ\n2行目";
@@ -65,6 +67,19 @@ describe("capture → apply ラウンドトリップ", () => {
     const kinds = fields.map((f) => f.locator);
     expect(kinds.some((l) => l.name === "csrf")).toBe(false);
     expect(kinds.some((l) => l.name === "upload")).toBe(false);
+  });
+
+  it("password はデフォルトでは保存対象に含めず、明示許可時だけ含める", () => {
+    fillForm();
+    const defaultFields = captureFields();
+    expect(defaultFields.some((f) => f.locator.id === "password")).toBe(false);
+
+    const passwordFields = captureFields({ includePasswords: true });
+    expect(passwordFields).toContainEqual({
+      locator: { id: "password" },
+      kind: "text",
+      value: "secret",
+    });
   });
 
   it("チェックを外した状態も復元できる（true → false）", () => {

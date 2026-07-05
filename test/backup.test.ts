@@ -16,9 +16,13 @@ const sites: Record<string, SiteEntry> = {
 
 describe("serializeBackup / parseBackup ラウンドトリップ", () => {
   it("設定・同期設定・サイトデータをすべて保持する", () => {
-    const json = serializeBackup({ autoApplyEnabled: false }, true, sites);
+    const json = serializeBackup(
+      { autoApplyEnabled: false, savePasswordsEnabled: true },
+      true,
+      sites,
+    );
     const parsed = parseBackup(json);
-    expect(parsed.settings).toEqual({ autoApplyEnabled: false });
+    expect(parsed.settings).toEqual({ autoApplyEnabled: false, savePasswordsEnabled: true });
     expect(parsed.syncEnabled).toBe(true);
     expect(parsed.sites).toEqual(sites);
     expect(parsed.exportedAt).toBeGreaterThan(0);
@@ -26,8 +30,8 @@ describe("serializeBackup / parseBackup ラウンドトリップ", () => {
 
   it("settings / syncEnabled が欠けていてもデフォルト値で補う", () => {
     const parsed = parseBackup(JSON.stringify({ sites: {} }));
-    expect(parsed.settings).toEqual({ autoApplyEnabled: true });
-    expect(parsed.syncEnabled).toBe(true);
+    expect(parsed.settings).toEqual({ autoApplyEnabled: true, savePasswordsEnabled: false });
+    expect(parsed.syncEnabled).toBe(false);
     expect(parsed.sites).toEqual({});
   });
 
