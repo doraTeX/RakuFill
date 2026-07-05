@@ -27,14 +27,26 @@ chrome.action.onClicked.addListener((tab) => {
     });
 });
 
-// アイコン右クリックメニュー「ダッシュボード」
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.create({
-    id: DASHBOARD_MENU_ID,
-    title: chrome.i18n.getMessage("dashboard"),
-    contexts: ["action"],
+/**
+ * アイコン右クリックメニュー「ダッシュボード」。
+ * contextMenus.create で登録したタイトルは Chrome 内部に永続化され、
+ * onInstalled（インストール/更新時）以外では再評価されない。そのため
+ * 表示言語を変えて Chrome を再起動しても、インストール時の言語のまま
+ * 残ってしまう。Chrome の表示言語の変更はブラウザ再起動後に反映される
+ * ため、onStartup でも作り直すことで実際の表示言語に追従させる。
+ */
+function ensureDashboardMenu(): void {
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: DASHBOARD_MENU_ID,
+      title: chrome.i18n.getMessage("dashboard"),
+      contexts: ["action"],
+    });
   });
-});
+}
+
+chrome.runtime.onInstalled.addListener(ensureDashboardMenu);
+chrome.runtime.onStartup.addListener(ensureDashboardMenu);
 
 chrome.contextMenus.onClicked.addListener((info) => {
   if (info.menuItemId === DASHBOARD_MENU_ID) openDashboard();
