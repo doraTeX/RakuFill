@@ -18,3 +18,18 @@ export function urlKeyOf(url: string): string | null {
   }
   return parsed.origin === "null" ? `file://${path}` : parsed.origin + path;
 }
+
+/**
+ * リンク（href）として開いてよい URL かどうか。
+ * URL キーは通常 urlKeyOf が生成するが、インポートしたバックアップ JSON からは
+ * 任意の文字列がキーになり得るため、javascript: などを href に載せないよう確認する。
+ */
+export function isLinkableUrl(url: string): boolean {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  return parsed.protocol === "http:" || parsed.protocol === "https:" || parsed.protocol === "file:";
+}

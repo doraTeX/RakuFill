@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { urlKeyOf } from "../src/shared/url-key";
+import { isLinkableUrl, urlKeyOf } from "../src/shared/url-key";
 
 describe("urlKeyOf", () => {
   it("オリジン+パスに正規化し、クエリとハッシュを無視する", () => {
@@ -28,5 +28,25 @@ describe("urlKeyOf", () => {
     expect(urlKeyOf("chrome://extensions")).toBeNull();
     expect(urlKeyOf("about:blank")).toBeNull();
     expect(urlKeyOf("not a url")).toBeNull();
+  });
+});
+
+describe("isLinkableUrl", () => {
+  it("http/https/file はリンクにできる", () => {
+    expect(isLinkableUrl("https://example.com/form")).toBe(true);
+    expect(isLinkableUrl("http://localhost:8080/form")).toBe(true);
+    expect(isLinkableUrl("file:///Users/me/test.html")).toBe(true);
+  });
+
+  it("javascript: など危険なスキームはリンクにしない", () => {
+    // インポートしたバックアップ JSON には任意のキーが入り得る
+    expect(isLinkableUrl("javascript:alert(1)")).toBe(false);
+    expect(isLinkableUrl("data:text/html,<script>alert(1)</script>")).toBe(false);
+    expect(isLinkableUrl("chrome://extensions")).toBe(false);
+  });
+
+  it("URL として解釈できない文字列はリンクにしない", () => {
+    expect(isLinkableUrl("not a url")).toBe(false);
+    expect(isLinkableUrl("")).toBe(false);
   });
 });

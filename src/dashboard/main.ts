@@ -16,6 +16,7 @@ import { parseSiteEntry, SiteEntryShapeError } from "../shared/site-entry";
 import { parseBackup } from "../shared/backup";
 import { isSubmitEnter } from "../shared/keyboard";
 import { locateJsonError } from "../shared/json-lint";
+import { isLinkableUrl } from "../shared/url-key";
 import { t } from "../shared/i18n";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -33,7 +34,7 @@ const noSites = $<HTMLParagraphElement>("no-sites");
 const noFilterMatch = $<HTMLParagraphElement>("no-filter-match");
 const selectSitePrompt = $<HTMLParagraphElement>("select-site-prompt");
 const siteDetail = $<HTMLDivElement>("site-detail");
-const siteUrlHeading = $<HTMLHeadingElement>("site-url");
+const siteUrlLink = $<HTMLAnchorElement>("site-url-link");
 const siteAliasInput = $<HTMLInputElement>("site-alias");
 const deleteSiteBtn = $<HTMLButtonElement>("delete-site");
 const profileList = $<HTMLUListElement>("profile-list");
@@ -227,7 +228,15 @@ async function renderDetail(): Promise<void> {
   }
   siteDetail.hidden = false;
   selectSitePrompt.hidden = true;
-  siteUrlHeading.textContent = selectedUrlKey;
+  // href を付けたときだけリンクとして機能する（不正な URL は素のテキスト表示）
+  siteUrlLink.textContent = selectedUrlKey;
+  if (isLinkableUrl(selectedUrlKey)) {
+    siteUrlLink.href = selectedUrlKey;
+    siteUrlLink.title = t("openInNewTab");
+  } else {
+    siteUrlLink.removeAttribute("href");
+    siteUrlLink.removeAttribute("title");
+  }
 
   // 入力中のフィールドは上書きしない（カーソル・IME を保護）
   if (document.activeElement !== siteAliasInput) {

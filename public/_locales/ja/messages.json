@@ -36,6 +36,7 @@
   "jsonShapeError": { "message": "データ形式が不正です（profiles 配列が必要です）" },
   "filterPlaceholder": { "message": "URL・表示名・入力状況名で絞り込み…" },
   "noFilterMatch": { "message": "絞り込みに一致する URL がありません" },
+  "openInNewTab": { "message": "このページを新しいタブで開く" },
   "aliasLabel": { "message": "表示名:" },
   "aliasPlaceholder": { "message": "未設定（URL をそのまま表示）" },
   "renameTitle": { "message": "名前を変更" },

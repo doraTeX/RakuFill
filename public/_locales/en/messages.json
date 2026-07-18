@@ -36,6 +36,7 @@
   "jsonShapeError": { "message": "Invalid data shape (a profiles array is required)" },
   "filterPlaceholder": { "message": "Filter by URL, display name, or snapshot name…" },
   "noFilterMatch": { "message": "No URLs match the filter" },
+  "openInNewTab": { "message": "Open this page in a new tab" },
   "aliasLabel": { "message": "Display name:" },
   "aliasPlaceholder": { "message": "Not set (the URL is shown)" },
   "renameTitle": { "message": "Rename" },

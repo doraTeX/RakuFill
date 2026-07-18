@@ -77,6 +77,10 @@ h3 { margin: 18px 0 8px; font-size: 14px; }
 
 .detail-header { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 8px 12px; }
 .site-url { flex: 1 1 200px; min-width: 0; word-break: break-all; font-size: 14px; color: #4338ca; }
+.site-url a { color: inherit; text-decoration: none; }
+/* href が無いとき（開けない URL）はリンクに見せない */
+.site-url a[href]:hover, .site-url a[href]:focus-visible { text-decoration: underline; }
+.site-url a[href] { cursor: pointer; }
 
 .alias-row {
   display: flex;
