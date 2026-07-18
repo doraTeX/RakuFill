@@ -18,6 +18,8 @@ body {
   color: #fff;
 }
 .app-header h1 { margin: 0; font-size: 18px; font-weight: 700; }
+/* 読み込み中の拡張機能のバージョン（開発時にどのビルドが有効か分かるように） */
+.app-version { margin-left: 6px; font-size: 12px; font-weight: 400; color: #a5b4fc; }
 .brand .accent { color: #fbbf24; }
 .settings-group { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
 .setting { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }

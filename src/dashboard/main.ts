@@ -51,6 +51,8 @@ function applyStaticTexts(): void {
   document.documentElement.lang = chrome.i18n.getUILanguage();
   document.title = t("dashboardTitle");
   $("title-suffix").textContent = t("dashboard");
+  // ビルド時定数ではなく実際に読み込まれている拡張機能の値を出す
+  $("app-version").textContent = `v${chrome.runtime.getManifest().version}`;
   $("auto-apply-label").textContent = t("settingAutoApply");
   $("save-passwords-label").textContent = t("settingSavePasswords");
   $("sync-enabled-label").textContent = t("settingSync");
