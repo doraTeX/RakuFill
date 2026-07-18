@@ -24,7 +24,7 @@ The built `dist/` package is not enough by itself. Prepare:
 
 Check [src/manifest.ts](../src/manifest.ts):
 
-- `version` is `1.0.0`.
+- `version` is bumped for every store upload. The Chrome Web Store rejects a ZIP whose version already exists, so raise it (and `package.json`) before packaging.
 - `<all_urls>` host permissions are required because users can save and restore forms on arbitrary websites. Explain this clearly in the single-purpose and permission-justification fields.
 - `tabs` permission is not used. SPA URL changes are detected in the content script through `history.pushState` / `replaceState`, `popstate`, `hashchange`, and a low-frequency URL check fallback.
 - Manifest V3 is used.

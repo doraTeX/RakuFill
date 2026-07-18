@@ -22,7 +22,7 @@ RakuFill を Chrome ウェブストアで公開するまでの手順。
 
 [src/manifest.ts](../src/manifest.ts) で確認・調整する。
 
-- `version` は `1.0.0`
+- `version` はストアへアップロードするたびに上げる。同じバージョンの ZIP は再アップロードできないため、パッケージ作成前に `package.json` と揃えて更新する
 - `<all_urls>` の `host_permissions` は審査で**理由の説明を求められやすい**項目。審査時の「単一目的の説明」欄に「ユーザー自身が任意のページでフォーム入力を保存・復元するため、全サイトへのアクセスが必要」と明記する
 - `tabs` 権限は使用しない。SPA の URL 変化は content script 側で `history.pushState` / `replaceState` / `popstate` / `hashchange` と低頻度の URL 確認フォールバックで監視する
 - `manifest_version: 3` は既に対応済み（MV2 は新規審査が通らないため必須）

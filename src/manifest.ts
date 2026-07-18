@@ -4,7 +4,7 @@ export default defineManifest({
   manifest_version: 3,
   name: "__MSG_extName__",
   description: "__MSG_extDescription__",
-  version: "1.0.0",
+  version: "1.1.0",
   // 日本語 UI 環境では ja/messages.json が使われ、それ以外の言語環境では
   // 一致するロケールが無いため既定ロケールの en/messages.json（英語）にフォールバックする
   default_locale: "en",
