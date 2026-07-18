@@ -1,3 +1,6 @@
 node_modules/
 dist/
 *.zip
+
+# 作業用の個人メモ（リポジトリには含めない）
+autofill.md
